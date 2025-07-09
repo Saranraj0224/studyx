@@ -26,8 +26,11 @@ VITE_SUPABASE_ANON_KEY=your_anon_key_here
 ### 4. Configure Authentication
 1. Go to Authentication > Settings in Supabase
 2. Enable email authentication
-3. Configure email templates if needed
-4. Set up redirect URLs for your domain
+3. **IMPORTANT**: Disable email confirmation for testing:
+   - Go to Authentication > Settings
+   - Turn OFF "Enable email confirmations"
+4. Configure email templates if needed
+5. Set up redirect URLs for your domain
 
 ## Hosting Options
 
@@ -72,6 +75,7 @@ VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
 ### Supabase Redirect URLs
 Add these URLs in Supabase Authentication settings:
 - `https://yourdomain.com`
+- `https://yourdomain.com/auth/callback`
 - `https://yourdomain.com/auth/callback`
 - `http://localhost:5173` (for development)
 
@@ -152,7 +156,10 @@ Add these URLs in Supabase Authentication settings:
 ### Common Issues
 1. **Environment variables not loading**: Check variable names and restart dev server
 2. **Database connection errors**: Verify Supabase URL and keys
-3. **Authentication issues**: Check redirect URLs and email settings
+3. **Authentication issues**: 
+   - Check redirect URLs and email settings
+   - Ensure email confirmation is disabled for testing
+   - Verify user creation trigger is working
 4. **Build failures**: Ensure all dependencies are installed
 
 ### Support Resources

@@ -343,9 +343,9 @@ export const TimerPage: React.FC<TimerPageProps> = ({ onNavigate }) => {
                   onClick={handleStart}
                   variant="primary"
                   size="lg"
-                  className="px-8"
+                  className="px-8 flex items-center gap-2"
                 >
-                  <Play size={20} className="mr-2" />
+                  <Play size={20} />
                   Start
                 </Button>
               ) : (
@@ -353,9 +353,9 @@ export const TimerPage: React.FC<TimerPageProps> = ({ onNavigate }) => {
                   onClick={handlePause}
                   variant="secondary"
                   size="lg"
-                  className="px-8"
+                  className="px-8 flex items-center gap-2"
                 >
-                  <Pause size={20} className="mr-2" />
+                  <Pause size={20} />
                   Pause
                 </Button>
               )}
@@ -364,9 +364,9 @@ export const TimerPage: React.FC<TimerPageProps> = ({ onNavigate }) => {
                 onClick={handleReset}
                 variant="ghost"
                 size="lg"
-                className="px-8"
+                className="px-8 flex items-center gap-2"
               >
-                <RotateCcw size={20} className="mr-2" />
+                <RotateCcw size={20} />
                 Reset
               </Button>
             </div>

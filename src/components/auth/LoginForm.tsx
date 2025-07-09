@@ -17,7 +17,16 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onSwitchToRegister }) => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    await login(email, password);
+    if (!email.trim() || !password.trim()) {
+      alert('Please fill in all fields');
+      return;
+    }
+    
+    const success = await login(email, password);
+    if (!success) {
+      // Error handling is done in the login function
+      return;
+    }
   };
 
   return (

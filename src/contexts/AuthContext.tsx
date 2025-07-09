@@ -96,33 +96,19 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       });
 
       if (error) {
-        console.error('Login error:', error);
+        console.error('Login error:', error.message);
+        alert(`Login failed: ${error.message}`);
         setIsLoading(false);
         return false;
       }
 
-      if (data.user) {
-        const { data: profile } = await supabase
-          .from('users')
-          .select('*')
-          .eq('id', data.user.id)
-          .single();
-
-        if (profile) {
-          setUser({
-            id: profile.id,
-            name: profile.name,
-            email: profile.email,
-            avatar: profile.avatar_url,
-            createdAt: new Date(profile.created_at),
-          });
-        }
-      }
+      // User will be set automatically by the auth state change listener
 
       setIsLoading(false);
       return true;
     } catch (error) {
-      console.error('Login error:', error);
+      console.error('Unexpected login error:', error);
+      alert('An unexpected error occurred during login');
       setIsLoading(false);
       return false;
     }
@@ -135,56 +121,34 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       const { data, error } = await supabase.auth.signUp({
         email,
         password,
+        options: {
+          data: {
+            name: name,
+          }
+        }
       });
 
       if (error) {
-        console.error('Registration error:', error);
+        console.error('Registration error:', error.message);
+        alert(`Registration failed: ${error.message}`);
         setIsLoading(false);
         return false;
       }
 
       if (data.user) {
-        // Create user profile
-        const { error: profileError } = await supabase
-          .from('users')
-          .insert({
-            id: data.user.id,
-            email,
-            name,
-          });
-
-        if (profileError) {
-          console.error('Profile creation error:', profileError);
+        // Check if email confirmation is required
+        if (!data.session) {
+          alert('Please check your email and click the confirmation link to complete registration.');
           setIsLoading(false);
-          return false;
+          return true;
         }
-
-        // Create default user settings
-        await supabase
-          .from('user_settings')
-          .insert({
-            user_id: data.user.id,
-            focus_time: 25,
-            short_break: 5,
-            long_break: 15,
-            auto_start: false,
-            sound_enabled: true,
-            fullscreen_mode: false,
-            notification_sound: 'bell',
-          });
-
-        setUser({
-          id: data.user.id,
-          name,
-          email,
-          createdAt: new Date(),
-        });
       }
 
       setIsLoading(false);
       return true;
     } catch (error) {
-      console.error('Registration error:', error);
+      console.error('Unexpected registration error:', error);
+      alert('An unexpected error occurred during registration');
       setIsLoading(false);
       return false;
     }

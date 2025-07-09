@@ -48,14 +48,14 @@ export const Button: React.FC<ButtonProps> = ({
       whileTap={!disabled ? { scale: 0.95 } : {}}
       transition={{ duration: 0.2 }}
     >
-      <motion.span
-        className="relative z-10"
+      <motion.div
+        className="relative z-10 flex items-center justify-center"
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.3 }}
       >
         {children}
-      </motion.span>
+      </motion.div>
     </motion.button>
   );
 };

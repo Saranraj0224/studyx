@@ -226,9 +226,9 @@ export const Dashboard: React.FC<DashboardProps> = ({ onNavigate }) => {
               onClick={() => setShowAddSubject(true)}
               variant="ghost"
               size="sm"
-              className="flex items-center"
+              className="flex items-center gap-2"
             >
-              <Plus size={18} className="mr-2" />
+              <Plus size={18} />
               Add Subject
             </Button>
           </div>

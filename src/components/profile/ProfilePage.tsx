@@ -187,8 +187,9 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({ onNavigate }) => {
                         onClick={handleSaveProfile}
                         variant="primary"
                         size="sm"
+                       className="flex items-center gap-2"
                       >
-                        <Save size={16} className="mr-2" />
+                       <Save size={16} />
                         Save Changes
                       </Button>
                       <Button
@@ -371,9 +372,9 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({ onNavigate }) => {
                   <Button
                     onClick={handleLogout}
                     variant="ghost"
-                    className="w-full justify-start text-red-400 hover:text-red-300 border-red-400/20 hover:border-red-300/20"
+                    className="w-full justify-start text-red-400 hover:text-red-300 border-red-400/20 hover:border-red-300/20 flex items-center gap-2"
                   >
-                    <LogOut size={18} className="mr-2" />
+                    <LogOut size={18} />
                     Sign Out
                   </Button>
                 </div>

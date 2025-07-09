@@ -262,9 +262,9 @@ export const TimerSettings: React.FC<TimerSettingsProps> = ({ onClose }) => {
             <Button
               onClick={handleSave}
               variant="primary"
-              className="flex-1"
+              className="flex-1 flex items-center justify-center gap-2"
             >
-              <Save size={16} className="mr-2" />
+              <Save size={16} />
               Save Settings
             </Button>
             <Button

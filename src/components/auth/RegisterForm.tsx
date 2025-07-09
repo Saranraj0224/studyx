@@ -18,7 +18,21 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({ onSwitchToLogin }) =
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    await register(name, email, password);
+    if (!name.trim() || !email.trim() || !password.trim()) {
+      alert('Please fill in all fields');
+      return;
+    }
+    
+    if (password.length < 6) {
+      alert('Password must be at least 6 characters long');
+      return;
+    }
+    
+    const success = await register(name, email, password);
+    if (!success) {
+      // Error handling is done in the register function
+      return;
+    }
   };
 
   return (

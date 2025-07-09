@@ -49,9 +49,9 @@ export const SubjectCard: React.FC<SubjectCardProps> = ({ subject, onClick }) =>
           <motion.button
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            className="flex items-center text-white hover:text-gray-200 transition-colors"
+            className="flex items-center gap-1 text-white hover:text-gray-200 transition-colors"
           >
-            <Plus size={16} className="mr-1" />
+            <Plus size={16} />
             Add Topic
           </motion.button>
         </div>

@@ -95,8 +95,9 @@ export const ChecklistPage: React.FC<ChecklistPageProps> = ({ subject, onNavigat
             onClick={() => setShowAddTopic(true)}
             variant="primary"
             size="sm"
+            className="flex items-center gap-2"
           >
-            <Plus size={18} className="mr-2" />
+            <Plus size={18} />
             Add Topic
           </Button>
         </motion.div>
