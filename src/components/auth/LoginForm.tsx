@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Mail, Lock, ArrowRight } from 'lucide-react';
+import { Mail, Lock, ArrowRight, AlertCircle } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 import { Input } from '../ui/Input';
 import { Button } from '../ui/Button';
@@ -13,20 +13,16 @@ interface LoginFormProps {
 export const LoginForm: React.FC<LoginFormProps> = ({ onSwitchToRegister }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const { login, isLoading } = useAuth();
+  const { login, isLoading, error } = useAuth();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
     if (!email.trim() || !password.trim()) {
-      alert('Please fill in all fields');
       return;
     }
     
-    const success = await login(email, password);
-    if (!success) {
-      // Error handling is done in the login function
-      return;
-    }
+    await login(email, password);
   };
 
   return (
@@ -56,6 +52,17 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onSwitchToRegister }) => {
           </motion.p>
         </div>
 
+        {error && (
+          <motion.div
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="mb-6 p-4 bg-red-500/10 border border-red-500/20 rounded-lg flex items-center"
+          >
+            <AlertCircle size={18} className="text-red-400 mr-3 flex-shrink-0" />
+            <span className="text-red-400 text-sm">{error}</span>
+          </motion.div>
+        )}
+
         <form onSubmit={handleSubmit} className="space-y-6">
           <Input
             type="email"
@@ -63,6 +70,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onSwitchToRegister }) => {
             value={email}
             onChange={setEmail}
             icon={<Mail size={18} />}
+            disabled={isLoading}
           />
 
           <Input
@@ -71,13 +79,14 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onSwitchToRegister }) => {
             value={password}
             onChange={setPassword}
             icon={<Lock size={18} />}
+            disabled={isLoading}
           />
 
           <Button
             type="submit"
             variant="primary"
             size="lg"
-            disabled={isLoading}
+            disabled={isLoading || !email.trim() || !password.trim()}
             className="w-full"
           >
             {isLoading ? (
@@ -89,7 +98,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onSwitchToRegister }) => {
             ) : (
               <>
                 Sign In
-                <ArrowRight size={18} className="ml-2" />
+                <ArrowRight size={18} />
               </>
             )}
           </Button>
@@ -105,6 +114,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onSwitchToRegister }) => {
           <button
             onClick={onSwitchToRegister}
             className="text-white font-medium hover:underline transition-all duration-200"
+            disabled={isLoading}
           >
             Sign up
           </button>

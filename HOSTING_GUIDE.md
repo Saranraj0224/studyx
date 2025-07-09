@@ -11,7 +11,7 @@
 
 ### 2. Configure Database
 1. Go to SQL Editor in your Supabase dashboard
-2. Copy and paste the contents of `database-setup.sql`
+2. Copy and paste the contents of `supabase/migrations/20250708165833_smooth_lagoon.sql`
 3. Run the SQL commands to create tables and policies
 
 ### 3. Get API Keys
@@ -23,14 +23,25 @@ VITE_SUPABASE_URL=your_project_url_here
 VITE_SUPABASE_ANON_KEY=your_anon_key_here
 ```
 
-### 4. Configure Authentication
+### 4. Configure Authentication (CRITICAL)
 1. Go to Authentication > Settings in Supabase
-2. Enable email authentication
-3. **IMPORTANT**: Disable email confirmation for testing:
-   - Go to Authentication > Settings
+2. **DISABLE email confirmation**:
+   - Scroll down to "Email Confirmation"
    - Turn OFF "Enable email confirmations"
-4. Configure email templates if needed
-5. Set up redirect URLs for your domain
+   - This allows immediate login after registration
+3. Set Site URL to your domain (e.g., `https://yourdomain.com`)
+4. Add redirect URLs:
+   - `https://yourdomain.com`
+   - `https://yourdomain.com/auth/callback`
+   - `http://localhost:5173` (for development)
+
+### 5. Test Authentication
+1. Try creating a new account
+2. You should be immediately logged in without email confirmation
+3. If you get stuck on the login page, check:
+   - Email confirmation is disabled
+   - Database tables are created properly
+   - Environment variables are correct
 
 ## Hosting Options
 
@@ -38,7 +49,9 @@ VITE_SUPABASE_ANON_KEY=your_anon_key_here
 1. Push your code to GitHub
 2. Go to [vercel.com](https://vercel.com)
 3. Import your GitHub repository
-4. Add environment variables in Vercel dashboard
+4. Add environment variables in Vercel dashboard:
+   - `VITE_SUPABASE_URL`
+   - `VITE_SUPABASE_ANON_KEY`
 5. Deploy
 
 ### Option 2: Netlify
@@ -75,7 +88,6 @@ VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
 ### Supabase Redirect URLs
 Add these URLs in Supabase Authentication settings:
 - `https://yourdomain.com`
-- `https://yourdomain.com/auth/callback`
 - `https://yourdomain.com/auth/callback`
 - `http://localhost:5173` (for development)
 
@@ -123,7 +135,7 @@ Add these URLs in Supabase Authentication settings:
 - Regular security updates through Supabase
 
 ### 3. Authentication
-- Email verification is recommended
+- Email confirmation can be enabled for production
 - Consider adding 2FA for enhanced security
 - Monitor for suspicious login attempts
 
@@ -154,13 +166,13 @@ Add these URLs in Supabase Authentication settings:
 ## Troubleshooting
 
 ### Common Issues
-1. **Environment variables not loading**: Check variable names and restart dev server
+1. **Authentication stuck on login page**: 
+   - Disable email confirmation in Supabase
+   - Check database tables are created
+   - Verify environment variables
 2. **Database connection errors**: Verify Supabase URL and keys
-3. **Authentication issues**: 
-   - Check redirect URLs and email settings
-   - Ensure email confirmation is disabled for testing
-   - Verify user creation trigger is working
-4. **Build failures**: Ensure all dependencies are installed
+3. **Build failures**: Ensure all dependencies are installed
+4. **Email confirmation loop**: Disable email confirmation in Supabase settings
 
 ### Support Resources
 - Supabase Documentation: [supabase.com/docs](https://supabase.com/docs)
@@ -180,3 +192,12 @@ Add these URLs in Supabase Authentication settings:
 - The application will automatically use the latest data from the database
 - Frontend updates require redeployment
 - Database schema changes need careful migration planning
+
+## Quick Fix Checklist
+
+If authentication isn't working:
+- [ ] Email confirmation is disabled in Supabase
+- [ ] Database migration has been run
+- [ ] Environment variables are set correctly
+- [ ] Site URL is configured in Supabase
+- [ ] User can create account and login immediately

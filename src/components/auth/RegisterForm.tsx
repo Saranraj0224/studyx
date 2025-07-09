@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Mail, Lock, User, ArrowRight } from 'lucide-react';
+import { Mail, Lock, User, ArrowRight, AlertCircle } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 import { Input } from '../ui/Input';
 import { Button } from '../ui/Button';
@@ -14,26 +14,26 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({ onSwitchToLogin }) =
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const { register, isLoading } = useAuth();
+  const { register, isLoading, error } = useAuth();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
     if (!name.trim() || !email.trim() || !password.trim()) {
-      alert('Please fill in all fields');
       return;
     }
     
     if (password.length < 6) {
-      alert('Password must be at least 6 characters long');
       return;
     }
     
     const success = await register(name, email, password);
-    if (!success) {
-      // Error handling is done in the register function
-      return;
+    if (success) {
+      // Registration successful, user will be redirected automatically
     }
   };
+
+  const isFormValid = name.trim() && email.trim() && password.length >= 6;
 
   return (
     <motion.div
@@ -62,6 +62,17 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({ onSwitchToLogin }) =
           </motion.p>
         </div>
 
+        {error && (
+          <motion.div
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="mb-6 p-4 bg-red-500/10 border border-red-500/20 rounded-lg flex items-center"
+          >
+            <AlertCircle size={18} className="text-red-400 mr-3 flex-shrink-0" />
+            <span className="text-red-400 text-sm">{error}</span>
+          </motion.div>
+        )}
+
         <form onSubmit={handleSubmit} className="space-y-6">
           <Input
             type="text"
@@ -69,6 +80,7 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({ onSwitchToLogin }) =
             value={name}
             onChange={setName}
             icon={<User size={18} />}
+            disabled={isLoading}
           />
 
           <Input
@@ -77,21 +89,28 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({ onSwitchToLogin }) =
             value={email}
             onChange={setEmail}
             icon={<Mail size={18} />}
+            disabled={isLoading}
           />
 
-          <Input
-            type="password"
-            placeholder="Password"
-            value={password}
-            onChange={setPassword}
-            icon={<Lock size={18} />}
-          />
+          <div>
+            <Input
+              type="password"
+              placeholder="Password (min 6 characters)"
+              value={password}
+              onChange={setPassword}
+              icon={<Lock size={18} />}
+              disabled={isLoading}
+            />
+            {password.length > 0 && password.length < 6 && (
+              <p className="text-red-400 text-xs mt-2">Password must be at least 6 characters</p>
+            )}
+          </div>
 
           <Button
             type="submit"
             variant="primary"
             size="lg"
-            disabled={isLoading}
+            disabled={isLoading || !isFormValid}
             className="w-full"
           >
             {isLoading ? (
@@ -103,7 +122,7 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({ onSwitchToLogin }) =
             ) : (
               <>
                 Create Account
-                <ArrowRight size={18} className="ml-2" />
+                <ArrowRight size={18} />
               </>
             )}
           </Button>
@@ -119,6 +138,7 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({ onSwitchToLogin }) =
           <button
             onClick={onSwitchToLogin}
             className="text-white font-medium hover:underline transition-all duration-200"
+            disabled={isLoading}
           >
             Sign in
           </button>

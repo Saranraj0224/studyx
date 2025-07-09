@@ -20,7 +20,7 @@ export const Button: React.FC<ButtonProps> = ({
   className = '',
   type = 'button',
 }) => {
-  const baseClasses = 'relative overflow-hidden font-medium transition-all duration-200 rounded-lg';
+  const baseClasses = 'relative overflow-hidden font-medium transition-all duration-200 rounded-lg flex items-center justify-center gap-2';
   
   const variants = {
     primary: 'bg-white text-black hover:bg-gray-100 shadow-lg',
@@ -48,14 +48,7 @@ export const Button: React.FC<ButtonProps> = ({
       whileTap={!disabled ? { scale: 0.95 } : {}}
       transition={{ duration: 0.2 }}
     >
-      <motion.div
-        className="relative z-10 flex items-center justify-center"
-        initial={{ opacity: 0, y: 10 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.3 }}
-      >
-        {children}
-      </motion.div>
+      {children}
     </motion.button>
   );
 };
